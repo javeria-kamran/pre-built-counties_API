@@ -1,8 +1,14 @@
-"use client";
-
+'use client'
 import { useQuery } from "@apollo/client";
 import { FETCH_COUNTRIES_LIST } from "../../graphql/queries";
 import Link from "next/link";
+
+// Define the type for Country
+interface Country {
+  code: string;
+  name: string;
+  emoji: string;
+}
 
 const CountriesHomePage = () => {
   const { data, loading, error } = useQuery(FETCH_COUNTRIES_LIST);
@@ -18,7 +24,7 @@ const CountriesHomePage = () => {
         Explore Countries
       </h1>
       <ul className="grid grid-cols-2 md:grid-cols-3 gap-8">
-        {data.countries.map((country: any) => (
+        {data.countries.map((country: Country) => ( 
           <li
             key={country.code}
             className="p-6 bg-slate-900 rounded-lg shadow-lg hover:shadow-xl transition"

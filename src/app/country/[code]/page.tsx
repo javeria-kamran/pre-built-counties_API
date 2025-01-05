@@ -1,9 +1,22 @@
-"use client";
+'use client'
 
 import { useQuery } from "@apollo/client";
 import { FETCH_COUNTRY_INFO } from "../../../../graphql/queries";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+
+// Define the types for Country and Language
+interface Language {
+  name: string;
+}
+
+interface Country {
+  name: string;
+  emoji: string;
+  capital: string;
+  currency: string;
+  languages: Language[];
+}
 
 const CountryDetails = () => {
   const params = useParams();
@@ -16,7 +29,7 @@ const CountryDetails = () => {
     return <p className="text-yellow-400">Fetching country data...</p>;
   if (error) return <p className="text-red-500">Oops! Something went wrong.</p>;
 
-  const { name, emoji, capital, currency, languages } = data.country;
+  const { name, emoji, capital, currency, languages } = data.country as Country; // Type assertion here
 
   return (
     <section className="p-10 bg-black min-h-screen text-white">
@@ -41,7 +54,7 @@ const CountryDetails = () => {
         <strong className="font-semibold">
           Languages <span className="text-orange-400">:</span>
         </strong>{" "}
-        {languages.map((lang: any) => lang.name).join(", ")}
+        {languages.map((lang: Language) => lang.name).join(", ")} {/* Type-cast here */}
       </p>{" "}
       <br />
       <br />
