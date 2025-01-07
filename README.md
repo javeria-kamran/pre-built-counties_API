@@ -4,7 +4,8 @@
 -Typescript
 -Tailwind Css
 -GraphQL
--Apolloclient(As gql library)
+-Apolloclient (As gql library)
+-Aws-Amplify (just used as a client library in gql)
 
 ## What is GraphQL and why we use apolloclient with gql to fetch data?
 ## By giving Real-Life Example
@@ -13,6 +14,9 @@ You tell the chef what toppings you want (writting query to describe country(tel
 Apollo sends the order (takes query and send it to graphQL),
 Pizza place will make the pizza( gql server uses specified country -query- to fetch data of the specified country),
 Apollo client delievers the pizza( server Bring information about the country on one click)"
+
+## Why we use Aws-Amplify to fetch data?
+"Amplify could power a feed with real-time updates, user profiles, and friend requests using GraphQL and AWS services. In essence, Amplify streamlines GraphQL development on AWS, making it faster and more efficient for developers."
 
 ## Why GraphQL?
 "Provide more efficient and flexible alternatives to traditional rest APIs"
@@ -26,3 +30,9 @@ Apollo client delievers the pizza( server Bring information about the country on
 -it's fast
 -it's accurate
 -Easy to use
+
+## Why Aws-Amplify ?
+-Rapid Prototyping (reducing time to market)
+-Data management (Handle data storage and sychronization)
+-Scalibility (Handle growing user demands)
+-Real-Time Updates (Features like chat or collabroative editing )

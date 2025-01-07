@@ -1,6 +1,5 @@
-import { gql } from "@apollo/client";
 
-export const FETCH_COUNTRIES_LIST = gql`
+export const FETCH_COUNTRIES_LIST = `
   query GetCountriesList {
     countries {
       code
@@ -10,7 +9,7 @@ export const FETCH_COUNTRIES_LIST = gql`
   }
 `;
 
-export const FETCH_COUNTRY_INFO = gql`
+export const FETCH_COUNTRY_INFO = `
   query FetchCountryInfo($code: ID!) {
     country(code: $code) {
       name

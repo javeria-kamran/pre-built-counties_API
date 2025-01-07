@@ -1,9 +1,16 @@
 'use client'
+
+import { Amplify } from "aws-amplify";
 import "./globals.css";
-import { ApolloProvider } from "@apollo/client";
-import client from "../../library/apolloclient";
 
-
+Amplify.configure({
+  API: {
+    GraphQL :{
+      endpoint: "https://countries.trevorblades.com/",
+      defaultAuthMode: "none"
+    }
+  }
+})
 
 export default function RootLayout({
   children,
@@ -13,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black">
-        <ApolloProvider client={client}>{children}</ApolloProvider>
+       {children}
       </body>
     </html>
   );

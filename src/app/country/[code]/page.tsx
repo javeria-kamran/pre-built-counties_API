@@ -1,11 +1,13 @@
-'use client'
+"use client";
 
-import { useQuery } from "@apollo/client";
+import { useState, useEffect } from "react";
+import { generateClient } from "aws-amplify/api";
 import { FETCH_COUNTRY_INFO } from "../../../../graphql/queries";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { GraphQLResult } from "@aws-amplify/api";
 
-// Define the types for Country and Language
+const client = generateClient();
 interface Language {
   name: string;
 }
@@ -21,15 +23,40 @@ interface Country {
 const CountryDetails = () => {
   const params = useParams();
   const countryCode = params?.code as string;
-  const { data, loading, error } = useQuery(FETCH_COUNTRY_INFO, {
-    variables: { code: countryCode },
-  });
+  const [country, setCountry] = useState<Country | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCountryDetails = async () => {
+      setLoading(true);
+      try {
+        const result = await client.graphql<GraphQLResult<any>>({
+          query: FETCH_COUNTRY_INFO,
+          variables: { code: countryCode },
+        });
+
+        if ("data" in result && result.data?.country) {
+          setCountry(result.data.country);
+        } else {
+          setError("Country data not found.");
+        }
+      } catch (err) {
+        setError("Failed to fetch country data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCountryDetails();
+  }, [countryCode]);
 
   if (loading)
     return <p className="text-yellow-400">Fetching country data...</p>;
-  if (error) return <p className="text-red-500">Oops! Something went wrong.</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!country) return <p className="text-red-700">Country not found.</p>;
 
-  const { name, emoji, capital, currency, languages } = data.country as Country; // Type assertion here
+  const { name, emoji, capital, currency, languages } = country;
 
   return (
     <section className="p-10 bg-black min-h-screen text-white">
@@ -54,9 +81,8 @@ const CountryDetails = () => {
         <strong className="font-semibold">
           Languages <span className="text-orange-400">:</span>
         </strong>{" "}
-        {languages.map((lang: Language) => lang.name).join(", ")} {/* Type-cast here */}
+        {languages.map((lang: Language) => lang.name).join(", ")}
       </p>{" "}
-      <br />
       <br />
       <Link
         href="/"
